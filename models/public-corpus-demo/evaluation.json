@@ -1,0 +1,492 @@
+{
+  "status": "evaluated_external_public",
+  "model_version": "goemotions-proxy-demo-1.0",
+  "source_type": "external_public",
+  "training_run_id": "b9a97905-e95f-4160-b1d1-ebdfc82fbb9d",
+  "generated_at": "2026-11-21T03:50:06.103514+00:00",
+  "is_moodspace_study_evidence": false,
+  "classes": [
+    "positive",
+    "neutral",
+    "stressed"
+  ],
+  "class_mapping": {
+    "positive": [
+      "joy",
+      "excitement",
+      "optimism"
+    ],
+    "neutral": [
+      "neutral"
+    ],
+    "stressed": [
+      "fear",
+      "nervousness"
+    ]
+  },
+  "source": {
+    "corpus": "GoEmotions",
+    "commit": "7951440944924ac61b6e2f9a2a3c715834005c40",
+    "downloads": {
+      "train.tsv": {
+        "url": "https://raw.githubusercontent.com/google-research/google-research/7951440944924ac61b6e2f9a2a3c715834005c40/goemotions/data/train.tsv",
+        "sha256": "1c254a142be5c00e80d819b9ae1bbd36d94b2eeb8f4b1271846508d57e57d9c5",
+        "bytes": 3519053
+      },
+      "dev.tsv": {
+        "url": "https://raw.githubusercontent.com/google-research/google-research/7951440944924ac61b6e2f9a2a3c715834005c40/goemotions/data/dev.tsv",
+        "sha256": "575489c079c9de1097062a01738f998590d6b7ead66dd1c9fd1d2ba01fd8bc62",
+        "bytes": 439059
+      },
+      "test.tsv": {
+        "url": "https://raw.githubusercontent.com/google-research/google-research/7951440944924ac61b6e2f9a2a3c715834005c40/goemotions/data/test.tsv",
+        "sha256": "0587b2dd8b27b97352adbfc3fb083d46005c8946657fdc2b1ca8b1cc7f1f8be4",
+        "bytes": 436706
+      },
+      "emotions.txt": {
+        "url": "https://raw.githubusercontent.com/google-research/google-research/7951440944924ac61b6e2f9a2a3c715834005c40/goemotions/data/emotions.txt",
+        "sha256": "45c3ef86782d2a4d7fedcd6d8c111aa0d0e94720689bd164fac94fefb4495a89",
+        "bytes": 248
+      },
+      "dataset-readme.md": {
+        "url": "https://raw.githubusercontent.com/google-research/google-research/7951440944924ac61b6e2f9a2a3c715834005c40/goemotions/README.md",
+        "sha256": "c882c69be9f400129bce8535319606434481a085be9c20263930670890e171a7",
+        "bytes": 7968
+      },
+      "repository-readme.md": {
+        "url": "https://raw.githubusercontent.com/google-research/google-research/7951440944924ac61b6e2f9a2a3c715834005c40/README.md",
+        "sha256": "1022d37738b52c672304dbe71038a4a1f0d2cac5de3c9178652873a5698a8674",
+        "bytes": 1007
+      },
+      "CC-BY-4.0.txt": {
+        "url": "https://creativecommons.org/licenses/by/4.0/legalcode.txt",
+        "sha256": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411",
+        "bytes": 18657
+      }
+    },
+    "dataset_license": "CC-BY-4.0",
+    "dataset_license_source": "https://raw.githubusercontent.com/google-research/google-research/7951440944924ac61b6e2f9a2a3c715834005c40/README.md",
+    "author_group_validation": false,
+    "author_metadata": "not present in simplified official TSVs; comment IDs are not people"
+  },
+  "protocol": {
+    "split_strategy": "official_train_dev_test_remove_duplicate_texts",
+    "deduplication": "NFKC + casefold + whitespace collapse; drop every repeated normalized text or comment ID across/within splits",
+    "hyperparameter_selection": "validation_only",
+    "heldout_test_evaluations": 1,
+    "refit_after_test": false,
+    "training_features": "sha256-hashed-word-1-2-grams-tfidf",
+    "feature_dimensions": 8192,
+    "train_cap": 15000,
+    "random_seed": 20261121,
+    "cross_split_normalized_text_overlap": 0,
+    "self_report_labels": false,
+    "participant_grouped_validation": false
+  },
+  "split_counts": {
+    "train": {
+      "official_rows": 43410,
+      "native_annotation_counts": {
+        "admiration": 4130,
+        "amusement": 2328,
+        "anger": 1567,
+        "annoyance": 2470,
+        "approval": 2939,
+        "caring": 1087,
+        "confusion": 1368,
+        "curiosity": 2191,
+        "desire": 641,
+        "disappointment": 1269,
+        "disapproval": 2022,
+        "disgust": 793,
+        "embarrassment": 303,
+        "excitement": 853,
+        "fear": 596,
+        "gratitude": 2662,
+        "grief": 77,
+        "joy": 1452,
+        "love": 2086,
+        "nervousness": 164,
+        "neutral": 14219,
+        "optimism": 1581,
+        "pride": 111,
+        "realization": 1110,
+        "relief": 153,
+        "remorse": 545,
+        "sadness": 1326,
+        "surprise": 1060
+      },
+      "excluded": {
+        "no_target_native_label": 24607,
+        "cross_class_or_target_plus_other_label": 2848,
+        "repeated_normalized_text_or_comment_id": 400
+      },
+      "mapped_rows_before_cap": 15555,
+      "mapped_class_counts": {
+        "neutral": 12745,
+        "stressed": 535,
+        "positive": 2275
+      },
+      "used_rows": 15000,
+      "used_class_counts": {
+        "neutral": 12290,
+        "stressed": 516,
+        "positive": 2194
+      }
+    },
+    "dev": {
+      "official_rows": 5426,
+      "native_annotation_counts": {
+        "admiration": 488,
+        "amusement": 303,
+        "anger": 195,
+        "annoyance": 303,
+        "approval": 397,
+        "caring": 153,
+        "confusion": 152,
+        "curiosity": 248,
+        "desire": 77,
+        "disappointment": 163,
+        "disapproval": 292,
+        "disgust": 97,
+        "embarrassment": 35,
+        "excitement": 96,
+        "fear": 90,
+        "gratitude": 358,
+        "grief": 13,
+        "joy": 172,
+        "love": 252,
+        "nervousness": 21,
+        "neutral": 1766,
+        "optimism": 209,
+        "pride": 15,
+        "realization": 127,
+        "relief": 18,
+        "remorse": 68,
+        "sadness": 143,
+        "surprise": 129
+      },
+      "excluded": {
+        "cross_class_or_target_plus_other_label": 349,
+        "no_target_native_label": 3075,
+        "repeated_normalized_text_or_comment_id": 58
+      },
+      "mapped_rows_before_cap": 1944,
+      "mapped_class_counts": {
+        "neutral": 1585,
+        "positive": 288,
+        "stressed": 71
+      },
+      "used_rows": 1944,
+      "used_class_counts": {
+        "neutral": 1585,
+        "positive": 288,
+        "stressed": 71
+      }
+    },
+    "test": {
+      "official_rows": 5427,
+      "native_annotation_counts": {
+        "admiration": 504,
+        "amusement": 264,
+        "anger": 198,
+        "annoyance": 320,
+        "approval": 351,
+        "caring": 135,
+        "confusion": 153,
+        "curiosity": 284,
+        "desire": 83,
+        "disappointment": 151,
+        "disapproval": 267,
+        "disgust": 123,
+        "embarrassment": 37,
+        "excitement": 103,
+        "fear": 78,
+        "gratitude": 352,
+        "grief": 6,
+        "joy": 161,
+        "love": 238,
+        "nervousness": 23,
+        "neutral": 1787,
+        "optimism": 186,
+        "pride": 16,
+        "realization": 145,
+        "relief": 11,
+        "remorse": 56,
+        "sadness": 156,
+        "surprise": 141
+      },
+      "excluded": {
+        "no_target_native_label": 3109,
+        "repeated_normalized_text_or_comment_id": 48,
+        "cross_class_or_target_plus_other_label": 327
+      },
+      "mapped_rows_before_cap": 1943,
+      "mapped_class_counts": {
+        "positive": 270,
+        "neutral": 1594,
+        "stressed": 79
+      },
+      "used_rows": 1943,
+      "used_class_counts": {
+        "positive": 270,
+        "neutral": 1594,
+        "stressed": 79
+      }
+    }
+  },
+  "validation_candidates": [
+    {
+      "C": 0.5,
+      "validation": {
+        "macro_f1": 0.7001157584879195,
+        "balanced_accuracy": 0.7286927606061653,
+        "confusion_matrix": [
+          [
+            196,
+            91,
+            1
+          ],
+          [
+            144,
+            1404,
+            37
+          ],
+          [
+            4,
+            23,
+            44
+          ]
+        ],
+        "per_class": {
+          "positive": {
+            "precision": 0.5697674418604651,
+            "recall": 0.6805555555555556,
+            "f1": 0.620253164556962,
+            "support": 288
+          },
+          "neutral": {
+            "precision": 0.924901185770751,
+            "recall": 0.8858044164037855,
+            "f1": 0.9049307122139865,
+            "support": 1585
+          },
+          "stressed": {
+            "precision": 0.5365853658536586,
+            "recall": 0.6197183098591549,
+            "f1": 0.5751633986928104,
+            "support": 71
+          }
+        }
+      }
+    },
+    {
+      "C": 1.0,
+      "validation": {
+        "macro_f1": 0.7090780001354163,
+        "balanced_accuracy": 0.7300996891502067,
+        "confusion_matrix": [
+          [
+            200,
+            87,
+            1
+          ],
+          [
+            143,
+            1411,
+            31
+          ],
+          [
+            4,
+            24,
+            43
+          ]
+        ],
+        "per_class": {
+          "positive": {
+            "precision": 0.5763688760806917,
+            "recall": 0.6944444444444444,
+            "f1": 0.6299212598425197,
+            "support": 288
+          },
+          "neutral": {
+            "precision": 0.9270696452036794,
+            "recall": 0.8902208201892744,
+            "f1": 0.9082716446733183,
+            "support": 1585
+          },
+          "stressed": {
+            "precision": 0.5733333333333334,
+            "recall": 0.6056338028169014,
+            "f1": 0.589041095890411,
+            "support": 71
+          }
+        }
+      }
+    },
+    {
+      "C": 2.0,
+      "validation": {
+        "macro_f1": 0.7171926112040463,
+        "balanced_accuracy": 0.7256136979606346,
+        "confusion_matrix": [
+          [
+            198,
+            89,
+            1
+          ],
+          [
+            138,
+            1423,
+            24
+          ],
+          [
+            3,
+            26,
+            42
+          ]
+        ],
+        "per_class": {
+          "positive": {
+            "precision": 0.584070796460177,
+            "recall": 0.6875,
+            "f1": 0.631578947368421,
+            "support": 288
+          },
+          "neutral": {
+            "precision": 0.9252275682704811,
+            "recall": 0.8977917981072555,
+            "f1": 0.9113032340698046,
+            "support": 1585
+          },
+          "stressed": {
+            "precision": 0.6268656716417911,
+            "recall": 0.5915492957746479,
+            "f1": 0.6086956521739131,
+            "support": 71
+          }
+        }
+      }
+    }
+  ],
+  "selected_C": 2.0,
+  "evaluation": {
+    "model": {
+      "macro_f1": 0.7016586245031097,
+      "balanced_accuracy": 0.7092548573010643,
+      "confusion_matrix": [
+        [
+          178,
+          85,
+          7
+        ],
+        [
+          113,
+          1453,
+          28
+        ],
+        [
+          5,
+          30,
+          44
+        ]
+      ],
+      "per_class": {
+        "positive": {
+          "precision": 0.6013513513513513,
+          "recall": 0.6592592592592592,
+          "f1": 0.6289752650176679,
+          "support": 270
+        },
+        "neutral": {
+          "precision": 0.9266581632653061,
+          "recall": 0.911543287327478,
+          "f1": 0.9190385831752056,
+          "support": 1594
+        },
+        "stressed": {
+          "precision": 0.5569620253164557,
+          "recall": 0.5569620253164557,
+          "f1": 0.5569620253164557,
+          "support": 79
+        }
+      }
+    },
+    "majority_class_baseline": {
+      "macro_f1": 0.30044293657525206,
+      "balanced_accuracy": 0.3333333333333333,
+      "confusion_matrix": [
+        [
+          0,
+          270,
+          0
+        ],
+        [
+          0,
+          1594,
+          0
+        ],
+        [
+          0,
+          79,
+          0
+        ]
+      ],
+      "per_class": {
+        "positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 270
+        },
+        "neutral": {
+          "precision": 0.8203808543489449,
+          "recall": 1.0,
+          "f1": 0.9013288097257562,
+          "support": 1594
+        },
+        "stressed": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 79
+        }
+      }
+    },
+    "confusion_matrix_label_order": [
+      "positive",
+      "neutral",
+      "stressed"
+    ],
+    "majority_label_from_training_only": "neutral"
+  },
+  "portable_validation_parity": {
+    "checked_rows": 1944,
+    "mismatches": 0
+  },
+  "environment": {
+    "python": "3.11.9",
+    "scikit_learn": "1.9.1",
+    "numpy": "2.2.6",
+    "scipy": "1.15.3"
+  },
+  "model_artifact": {
+    "file": "model.json",
+    "format": "moodspace-public-hashed-tfidf-logistic-v1",
+    "sha256": "6cc164a0ef96da7c85450661ba663afd7f2a1baa5cc82eda2412154c98c3ccc7",
+    "bytes": 678799
+  },
+  "limitations": [
+    "Fear/nervousness is an externally annotated proxy, not stress or self-reported student mood.",
+    "English Reddit comments differ from MoodSpace check-ins; domain transfer is unvalidated.",
+    "Official TSVs lack authors, so person/author leakage cannot be ruled out or group-tested.",
+    "Text deduplication prevents identical normalized strings, not paraphrase or topic leakage.",
+    "Strict remapping excludes most native labels and does not evaluate the original 28-label task.",
+    "Probabilities are not calibrated; no confidence or clinical claim is provided.",
+    "This public-corpus result cannot activate genuine-study model or UI recommendation readiness."
+  ],
+  "runtime_gate": {
+    "available": true,
+    "reason": "validated_external_public_proxy_demo"
+  }
+}

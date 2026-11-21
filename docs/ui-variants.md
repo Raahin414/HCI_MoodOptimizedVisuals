@@ -1,0 +1,16 @@
+# Eight workspace structures
+
+All three moods can use every UI. Mood never makes a layout unavailable and never establishes superiority by design. Every renderer reads the same fictional academic records and uses the same task/course detail and completion actions. Shared details provide parity without replacing the layout's primary organizing structure. These are design expectations to test, not empirical findings.
+
+| ID / design | Information hierarchy and navigation | Density | Expected strength | Trade-off | Distinguishing interaction |
+| --- | --- | --- | --- | --- | --- |
+| U01 Quiet Focus | One selected task first; reveal the full queue and course context on demand. | Low initially, expandable | A clear next action with fewer simultaneous choices. | Comparing several deadlines requires disclosure. | Spotlight selection with a queue that changes the active task. |
+| U02 Kanban Flow | Task status first: To do, In progress, Completed; open a card for academic context. | Medium/high | Scan work stages and move a task with keyboard-accessible controls. | Dates and course progress need cross-column inspection. | Spatial status columns and explicit status changes. |
+| U03 Weekly Planner | Calendar day first, then due items; navigate weeks and inspect days. | Medium | See temporal clustering and locate a named date. | Work outside the visible week needs navigation. | Seven-day schedule and mobile daily agenda. |
+| U04 Progress Studio | Course-level completion measures first; drill into the tasks underlying each metric. | Medium | Locate a lagging course and inspect its remaining workload. | A completion percentage alone says little about urgency. | Interactive progress chart/bar drill-down. |
+| U05 Course Hub | Academic subject first, with expandable deadlines, milestones and tasks. | Medium | Preserve course context when examining related work. | Cross-course priorities require scanning subjects. | Course disclosure groups with associated milestones. |
+| U06 Priority Matrix | Urgency × importance first; four labeled action groups contain canonical tasks. | Medium/high | Make competing priorities and mapping rules explicit. | A binary rule compresses nuanced priorities. | Actionable quadrants; high priority means important and near/overdue means urgent. |
+| U07 Guided Assistant | Intent first; choose a supported question, then inspect the returned records. | Low initially | Offer a guided route to deadlines, course attention and completion. | Unsupported language needs transparent fallback; broad comparison may take more steps. | Deterministic conversation with explicit supported options, without a network model. |
+| U08 Daily Brief | Editorial summary first; ranked actionable items, course notes and dated sections. | Medium | Read a coherent briefing and expand the items that matter. | Prose can be slower than a spatial overview for repeated scanning. | Text-first ranked briefing with inline task/course actions. |
+
+The initial and final gallery previews represent these structures, rather than recoloring one dashboard. Record which previews were viewed. An untested design selected at the end remains a preview-based preference. Shared academic content is invented demonstration content; human study observations are never seeded.

@@ -1,0 +1,13 @@
+{
+  "source_type": "external_public",
+  "repeated_same_prespecified_experiment": true,
+  "numeric_weights_sha256": "5d36ea24704d963ff1f1b29d0c12f9ce376cb6bb73a2a0afad93d01ce3478d40",
+  "numeric_weights_identical": true,
+  "selected_C_identical": true,
+  "heldout_evaluation_identical": true,
+  "independent_new_evidence": false,
+  "validation_portable_parity": {
+    "checked_rows": 1944,
+    "mismatches": 0
+  }
+}

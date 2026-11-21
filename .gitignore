@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.env
+data/
+exports/
+test-results/
+playwright-report/
+work/
+*.log
+.taste-skill/
+__pycache__/
+.venv/
+.venv-analysis/
+.env.*
+!.env.example
+*.sqlite*
+*.joblib

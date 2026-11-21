@@ -1,0 +1,4 @@
+* text=auto eol=lf
+*.png binary
+# Runtime SHA256 validation must see the exact trained bytes on every platform.
+models/public-corpus-demo/model.json -text
