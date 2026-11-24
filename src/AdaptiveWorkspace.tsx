@@ -21,6 +21,7 @@ export default function AdaptiveWorkspace() {
     [source, setSource] = useState('demo'),
     [preferred, setPreferred] = useState(''),
     [moodGuided, setMoodGuided] = useState(true),
+    [reviewSuggestions, setReviewSuggestions] = useState(false),
     [alternative, setAlternative] = useState('U01'),
     [purpose, setPurpose] = useState(false),
     [savedFeedback, setSavedFeedback] = useState(false),
@@ -64,6 +65,8 @@ export default function AdaptiveWorkspace() {
         .then((r) => {
           setResult(r);
           setAlternative(r.ui_variant);
+          if (!reviewSuggestions)
+            act('recommendation', { decision: 'accepted', ui_variant: r.ui_variant });
         })
         .catch((e) => setError(e.message));
   }, [session?.phase, credentials?.id]);
@@ -179,57 +182,60 @@ export default function AdaptiveWorkspace() {
       )}
       {!session ? (
         <section className="study-form">
-          <span className="context-label">Mood-aware workspace · separate from the experiment</span>
           <h1>Find your space for today.</h1>
-          <p>
-            Use your camera to estimate an expression, confirm one of three mood modes, and open a
-            suggested workspace. All eight structures remain yours to choose. Camera processing
-            stays on this device; you can also choose a mood manually.
-          </p>
-          <label>
-            Your preferred structure
-            <select
-              aria-label="Your preferred structure"
-              value={preferred}
-              onChange={(e) => setPreferred(e.target.value)}
-            >
-              <option value="">No preference — neutral starting interface</option>
-              {VARIANTS.map((v) => (
-                <option key={v.id} value={v.id}>
-                  {v.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Workspace record purpose
-            <select
-              aria-label="Workspace record purpose"
-              value={source}
-              onChange={(e) => setSource(e.target.value)}
-            >
-              <option value="demo">Rehearsal — excluded from research</option>
-              <option value="real">Genuine voluntary observation</option>
-              {purpose && (
-                <option value="automated_test">Automated test — excluded from research</option>
-              )}
-            </select>
-          </label>
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              checked={moodGuided}
-              onChange={(e) => setMoodGuided(e.target.checked)}
-            />
-            Try mood-guided design suggestions when I have no preferred layout. These are
-            demonstration rules, not evidence of mood-specific superiority.
-          </label>
+          <p>Scan your face. Confirm your mood. Find a layout that fits.</p>
+          <details className="simple-options">
+            <summary>More options</summary>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={reviewSuggestions}
+                onChange={(e) => setReviewSuggestions(e.target.checked)}
+              />
+              Review suggestions before opening
+            </label>
+            <label>
+              Your preferred structure
+              <select
+                aria-label="Your preferred structure"
+                value={preferred}
+                onChange={(e) => setPreferred(e.target.value)}
+              >
+                <option value="">No preference — neutral starting interface</option>
+                {VARIANTS.map((v) => (
+                  <option key={v.id} value={v.id}>
+                    {v.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Workspace record purpose
+              <select
+                aria-label="Workspace record purpose"
+                value={source}
+                onChange={(e) => setSource(e.target.value)}
+              >
+                <option value="demo">Rehearsal — excluded from research</option>
+                <option value="real">Genuine voluntary observation</option>
+                {purpose && (
+                  <option value="automated_test">Automated test — excluded from research</option>
+                )}
+              </select>
+            </label>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={moodGuided}
+                onChange={(e) => setMoodGuided(e.target.checked)}
+              />
+              Try mood-guided design suggestions when I have no preferred layout. These are
+              demonstration rules, not evidence of mood-specific superiority.
+            </label>
+          </details>
           <p className="ethics-note">
-            Local class project, pending institutional review. With your agreement we save mood
-            confirmed mood labels, choices, workspace actions and optional ratings under a private
-            code. Camera access is optional and requested separately. Images are never saved. You
-            can delete the records at any time. Personal workspace use is not a randomized study
-            trial.
+            Your camera stays on your device. We save your confirmed mood and workspace changes
+            locally. You can delete them at any time.
           </p>
           <label className="checkbox-label">
             <input
@@ -260,11 +266,6 @@ export default function AdaptiveWorkspace() {
       ) : (
         <>
           <div className="study-status">
-            <span>
-              {session.source_type === 'real'
-                ? 'Consented personal workspace'
-                : 'Rehearsal / automated workspace · excluded from evidence'}
-            </span>
             <span>{busy ? 'Saving…' : 'Saved locally'}</span>
             <details>
               <summary>Workspace controls</summary>
@@ -280,7 +281,7 @@ export default function AdaptiveWorkspace() {
           {session.phase === 'mood' ? (
             <MoodCheck
               camera
-              continueLabel="Find my workspace suggestion"
+              continueLabel="Open my workspace"
               predict={(text, reference_mood) =>
                 api(
                   '/sessions/' + credentials!.id + '/predict',
@@ -292,29 +293,33 @@ export default function AdaptiveWorkspace() {
             />
           ) : session.phase === 'recommendation' ? (
             <section className="study-form recommendation">
-              <h1>A suggestion, with its source.</h1>
+              <h1>{reviewSuggestions ? 'Your space for today.' : 'Opening your workspace…'}</h1>
               {!result ? (
                 <p>Evaluating all eight candidates…</p>
               ) : (
                 <>
                   <div className="recommendation-result">
-                    <span className="soft-label">
-                      {result.selection_source === 'design-heuristic'
-                        ? 'Mood-guided design demonstration'
-                        : result.selection_source === 'mood-evidence'
-                          ? 'Exploratory mood evidence'
-                          : result.selection_source === 'overall-evidence'
-                            ? 'Observed overall baseline'
-                            : result.selection_source === 'user-preference'
-                              ? 'Your preference · insufficient evidence'
-                              : 'Neutral starting interface · insufficient evidence'}
-                    </span>
+                    <details>
+                      <summary>Why this layout?</summary>
+                      <span className="soft-label">
+                        {result.selection_source === 'design-heuristic'
+                          ? 'Mood-guided design demonstration'
+                          : result.selection_source === 'mood-evidence'
+                            ? 'Exploratory mood evidence'
+                            : result.selection_source === 'overall-evidence'
+                              ? 'Observed overall baseline'
+                              : result.selection_source === 'user-preference'
+                                ? 'Your preference · insufficient evidence'
+                                : 'Neutral starting interface · insufficient evidence'}
+                      </span>
+                      <p>{result.reason}</p>
+                      <p>
+                        Active mood: <strong>{session.active_mood}</strong> · human-confirmed.
+                        Method: {result.method} / {result.version}.
+                      </p>
+                    </details>
                     <h2>{VARIANTS.find((v) => v.id === result.ui_variant)?.name}</h2>
-                    <p>{result.reason}</p>
-                    <p>
-                      Active mood: <strong>{session.active_mood}</strong> · human-confirmed. Method:{' '}
-                      {result.method} / {result.version}.
-                    </p>
+                    <p>For your {session.active_mood} mood. You can switch layouts anytime.</p>
                     <button
                       className="primary"
                       disabled={busy}
@@ -328,31 +333,34 @@ export default function AdaptiveWorkspace() {
                       Use suggested workspace
                     </button>
                   </div>
-                  <label>
-                    Choose a different interface
-                    <select
-                      aria-label="Override workspace"
-                      value={alternative}
-                      onChange={(e) => setAlternative(e.target.value)}
+                  <details>
+                    <summary>Try another layout</summary>
+                    <label>
+                      Choose a different interface
+                      <select
+                        aria-label="Override workspace"
+                        value={alternative}
+                        onChange={(e) => setAlternative(e.target.value)}
+                      >
+                        {VARIANTS.map((v) => (
+                          <option key={v.id} value={v.id}>
+                            {v.name}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <button
+                      disabled={busy}
+                      onClick={() =>
+                        act('recommendation', {
+                          decision: 'manual_override',
+                          ui_variant: alternative,
+                        })
+                      }
                     >
-                      {VARIANTS.map((v) => (
-                        <option key={v.id} value={v.id}>
-                          {v.name}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <button
-                    disabled={busy}
-                    onClick={() =>
-                      act('recommendation', {
-                        decision: 'manual_override',
-                        ui_variant: alternative,
-                      })
-                    }
-                  >
-                    Open my chosen layout
-                  </button>
+                      Open my chosen layout
+                    </button>
+                  </details>
                   <details>
                     <summary>All eight candidates and support</summary>
                     {result.candidates.map((c: any) => (
@@ -374,10 +382,6 @@ export default function AdaptiveWorkspace() {
                     Active mood: {session.active_mood} · human-confirmed
                   </span>
                   <h1>{VARIANTS.find((v) => v.id === session.active_ui)?.name}</h1>
-                  <p>
-                    Your chosen structure is rendered below. Changes and voluntary feedback are
-                    saved separately from experimental trials.
-                  </p>
                   <button
                     onClick={() => {
                       localStorage.removeItem(key);
@@ -390,10 +394,6 @@ export default function AdaptiveWorkspace() {
                   >
                     Start a new mood check
                   </button>
-                  <p className="muted">
-                    This starts a separate workspace. Save your current resume code in Workspace
-                    controls to return here.
-                  </p>
                 </div>
                 <label>
                   Switch interface
@@ -425,12 +425,9 @@ export default function AdaptiveWorkspace() {
                 }
                 onEvent={event}
               />
-              <section className="research-panel">
+              <details className="research-panel">
+                <summary>Leave feedback</summary>
                 <h2>How does this workspace feel?</h2>
-                <p>
-                  Optional usability feedback. These self-selected observations do not choose an
-                  empirical study winner.
-                </p>
                 <form
                   className="workspace-feedback-form"
                   onSubmit={async (e) => {
@@ -486,7 +483,7 @@ export default function AdaptiveWorkspace() {
                   </button>
                   {savedFeedback && <p role="status">Workspace feedback saved.</p>}
                 </form>
-              </section>
+              </details>
             </>
           ) : (
             <p>This session is paused.</p>

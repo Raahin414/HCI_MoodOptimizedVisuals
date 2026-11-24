@@ -32,16 +32,48 @@ async function call(path: string, body?: any, token?: string, method?: string) {
   return { status: r.status, data: await r.json() };
 }
 const assessment = { valence: 3, arousal: 3, text_opt_in: false };
+it('keeps unused workspace scales null while requiring actual ratings in the study', async () => {
+  for (const mode of ['workspace', 'study']) {
+    const c = (await call('/sessions', { consent: true, source_type: 'automated_test', mode }))
+      .data;
+    const response = await call(
+      '/sessions/' + c.session.id + '/mood',
+      {
+        mood: 'positive',
+        valence: null,
+        arousal: null,
+        text_opt_in: false,
+      },
+      c.token,
+    );
+    expect(response.status).toBe(mode === 'workspace' ? 200 : 400);
+    if (mode === 'workspace')
+      expect(all(db, 'mood_reports')[0]).toMatchObject({ valence: null, arousal: null });
+  }
+});
 it('stores camera label provenance without frames and rejects camera labels in the original study', async () => {
   for (const mode of ['workspace', 'study']) {
-    const c = (await call('/sessions', { consent: true, source_type: 'automated_test', mode })).data;
-    const result = await call('/sessions/' + c.session.id + '/mood', {
-      ...assessment, mood: 'neutral', assessment_source: 'camera-corrected', camera_suggestion: 'positive', frames: 'MUST_NOT_BE_SAVED',
-    }, c.token);
+    const c = (await call('/sessions', { consent: true, source_type: 'automated_test', mode }))
+      .data;
+    const result = await call(
+      '/sessions/' + c.session.id + '/mood',
+      {
+        ...assessment,
+        mood: 'neutral',
+        assessment_source: 'camera-corrected',
+        camera_suggestion: 'positive',
+        frames: 'MUST_NOT_BE_SAVED',
+      },
+      c.token,
+    );
     expect(result.status).toBe(mode === 'workspace' ? 200 : 400);
     if (mode === 'workspace') {
-      const report = all(db, 'mood_reports').find(r => r.session_id === c.session.id);
-      expect(report).toMatchObject({ assessment_source: 'camera-corrected', camera_suggestion: 'positive', mood: 'neutral' });
+      const report = all(db, 'mood_reports').find((r) => r.session_id === c.session.id);
+      expect(report).toMatchObject({
+        assessment_source: 'camera-corrected',
+        camera_suggestion: 'positive',
+        mood: 'neutral',
+      });
       expect(report.frames).toBeUndefined();
     }
   }

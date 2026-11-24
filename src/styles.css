@@ -3619,3 +3619,6 @@ details > label {
 .camera-preview { display: block; width: 100%; max-width: 560px; aspect-ratio: 4 / 3; object-fit: cover; background: #1e2b28; border-radius: 12px; transform: scaleX(-1); }
 .camera-idle { display: none; }
 .camera-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-block: 1rem; }
+.simple-moods { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; }
+.simple-moods .mood-option { min-height: 94px; padding: 1rem .5rem; }
+.simple-options { margin-block: 1rem; }

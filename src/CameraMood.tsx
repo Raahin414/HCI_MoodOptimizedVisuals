@@ -89,9 +89,7 @@ export default function CameraMood({ onAccept }: { onAccept: (mood: Mood) => voi
             );
           } else {
             history = [...history, mood].slice(-5);
-            setStatus(
-              `Checking ${labels[mood].toLowerCase()} expression… ${history.filter((m) => m === mood).length}/5 frames`,
-            );
+            setStatus('Hold still for a moment…');
             if (history.length === 5 && history.filter((m) => m === mood).length >= 4) {
               setSuggestion(mood);
               release();
@@ -121,11 +119,6 @@ export default function CameraMood({ onAccept }: { onAccept: (mood: Mood) => voi
   }
   return (
     <section className="camera-mood" aria-label="Camera mood check">
-      <h2>Let your expression suggest a space.</h2>
-      <p>
-        With your permission, a local model estimates your facial expression. No photos, video, face
-        identities or expression scores are saved or uploaded.
-      </p>
       <video
         ref={video}
         muted
@@ -159,10 +152,14 @@ export default function CameraMood({ onAccept }: { onAccept: (mood: Mood) => voi
           another mood below.
         </p>
       )}
-      <p className="muted">
-        Expression is not inner mood. Happy → positive; neutral → neutral; sad, fearful, angry or
-        disgusted → stressed as a demo proxy. Unclear expressions receive no suggestion.
-      </p>
+      <details className="muted">
+        <summary>About the camera</summary>
+        <p>Images are never saved or uploaded.</p>
+        <p>
+          Expression is not inner mood. Happy → positive; neutral → neutral; sad, fearful, angry or
+          disgusted → stressed as a demo proxy. Unclear expressions receive no suggestion.
+        </p>
+      </details>
     </section>
   );
 }

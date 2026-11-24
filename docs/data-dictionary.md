@@ -90,3 +90,7 @@ Participant-level UI summaries first aggregate repeated trials/sessions from one
 ## Withdrawal and retention
 
 The participant's session/withdrawal credential authenticates retrieval and deletion, while the researcher dashboard uses a configured server-side administrator secret. Do not publish these credentials. Deletion removes related records from the live store; any previously exported copies require the researcher to apply deletion separately. Agree a class/institutional retention period before collecting real data. See methodology for consent and recruitment limits.
+# Camera workspace context scales
+
+Personal workspace mood reports may have `valence: null` and `arousal: null`: these scales were not collected in the simplified flow. Do not treat null as a neutral rating or derive ratings from mood. Original study check-ins still require 1–5 ratings.
+

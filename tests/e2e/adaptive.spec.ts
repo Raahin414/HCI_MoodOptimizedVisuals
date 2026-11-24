@@ -11,6 +11,8 @@ for (const mood of [
     const errors: string[] = [];
     page.on('pageerror', (e) => errors.push(e.message));
     await page.goto('/adapt');
+    await page.getByText('More options', { exact: true }).click();
+    await page.getByLabel('Review suggestions before opening').check();
     await page.getByLabel('Workspace record purpose').selectOption('automated_test');
     await page.getByLabel('Your preferred structure').selectOption('U08');
     await page.getByLabel('I voluntarily agree to this local workspace').check();
@@ -18,11 +20,13 @@ for (const mood of [
     await page.getByRole('radio', { name: mood.label }).check();
     await expect(page.getByRole('button', { name: 'Enable camera & scan' })).toBeVisible();
     await expect(page.getByLabel('In a sentence')).toHaveCount(0);
-    await page.getByRole('button', { name: 'Find my workspace suggestion' }).click();
+    await page.getByRole('button', { name: 'Open my workspace' }).click();
+    await page.getByText('Why this layout?', { exact: true }).click();
     await expect(
       page.getByText('Your preference · insufficient evidence', { exact: true }),
     ).toBeVisible();
     await expect(page.getByText('Active mood:', { exact: false })).toContainText(mood.id);
+    await page.getByText('Try another layout', { exact: true }).click();
     await page.getByRole('combobox', { name: 'Override workspace' }).selectOption('U03');
     await page.getByRole('button', { name: 'Open my chosen layout' }).click();
     await expect(page.getByRole('heading', { name: 'Weekly Planner', exact: true })).toBeVisible();
@@ -35,6 +39,7 @@ for (const mood of [
     await page.getByRole('button', { name: 'Mark complete', exact: true }).click();
     await expect(page.getByText('Task marked complete.')).toBeVisible();
     await page.getByRole('button', { name: 'Close dialog' }).click();
+    await page.getByText('Leave feedback', { exact: true }).click();
     await page.getByLabel('Workspace satisfaction').selectOption('4');
     await page.getByLabel('Workspace mental effort').selectOption('3');
     await page.getByRole('button', { name: 'Save workspace feedback' }).click();
@@ -94,12 +99,15 @@ test('accepted fallback renders suggested UI; all eight can be switched without 
   page,
 }) => {
   await page.goto('/adapt');
+  await page.getByText('More options', { exact: true }).click();
+  await page.getByLabel('Review suggestions before opening').check();
   await page.getByLabel('Workspace record purpose').selectOption('automated_test');
   await page.getByLabel('Try mood-guided design suggestions').uncheck();
   await page.getByLabel('I voluntarily agree').check();
   await page.getByRole('button', { name: 'Assess my current mood' }).click();
   await page.getByRole('radio', { name: /Neutral \/ Balanced/ }).check();
-  await page.getByRole('button', { name: 'Find my workspace suggestion' }).click();
+  await page.getByRole('button', { name: 'Open my workspace' }).click();
+  await page.getByText('Why this layout?', { exact: true }).click();
   await expect(page.getByText('Neutral starting interface · insufficient evidence')).toBeVisible();
   await page.getByRole('button', { name: 'Use suggested workspace' }).click();
   await expect(page.getByRole('heading', { name: 'Quiet Focus', exact: true })).toBeVisible();

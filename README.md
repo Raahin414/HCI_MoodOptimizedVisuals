@@ -4,6 +4,8 @@ An original, local-first student workspace and undergraduate HCI research instru
 
 ## Small-scale classroom demonstration
 
+**Simple mode:** consent, scan or choose Positive / Neutral / Stressed, then **Open my workspace**. The suggested layout opens directly. All eight layouts are available in the switcher. Extra settings and optional review are under More options. Pleasantness and energy are collected only in the study, not inferred from the camera.
+
 **Camera-first update:** `/adapt` now uses a local facial-expression model, not text. Agree to workspace collection, click **Enable camera & scan**, permit camera access, accept/correct a suggested mode, and open the suggested workspace. Images are never stored or uploaded. There are three modes and eight total interactive layouts; suggestions are enabled by default. If an older workspace resumes, click **Start a new mood check**. See [camera setup, mapping, privacy and limits](docs/camera-workspace.md). `/study` retains the original self-report protocol. Expression recognition cannot establish someone's inner feelings or true stress. The optional text model described below remains available in the original study only.
 
 Exactly **3 mood classes and 8 total structures**; not 24 separate applications. Open `/adapt`, keep rehearsal provenance, leave the preferred layout empty, and opt into **mood-guided design suggestions**. Positive suggests Kanban Flow, Neutral suggests Daily Brief, and Stressed suggests Quiet Focus. These opt-in rules demonstrate visible adaptation and are explicitly not research findings. All eight remain selectable; your explicit preference and any sufficiently supported genuine empirical result take priority. The randomized study never uses these demo rules.

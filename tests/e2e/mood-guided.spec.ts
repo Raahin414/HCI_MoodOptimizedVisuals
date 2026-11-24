@@ -9,12 +9,15 @@ for (const [mood, ui, name] of [
     request,
   }) => {
     await page.goto('/adapt');
+    await page.getByText('More options', { exact: true }).click();
+    await page.getByLabel('Review suggestions before opening').check();
     await page.getByLabel('Workspace record purpose').selectOption('automated_test');
     await page.getByLabel('Try mood-guided design suggestions').check();
     await page.getByLabel('I voluntarily agree').check();
     await page.getByRole('button', { name: 'Assess my current mood' }).click();
     await page.getByRole('radio', { name: new RegExp(mood.replace('/', '\\/')) }).check();
-    await page.getByRole('button', { name: 'Find my workspace suggestion' }).click();
+    await page.getByRole('button', { name: 'Open my workspace' }).click();
+    await page.getByText('Why this layout?', { exact: true }).click();
     await expect(page.getByText('Mood-guided design demonstration', { exact: true })).toBeVisible();
     await expect(page.getByRole('heading', { name, exact: true })).toBeVisible();
     await expect(page.getByText(/not evidence that this UI is best/)).toBeVisible();

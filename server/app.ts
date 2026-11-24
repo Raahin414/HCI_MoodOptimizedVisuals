@@ -27,8 +27,8 @@ const iso = () => new Date().toISOString();
 const hash = (s: string) => createHash('sha256').update(s).digest('hex');
 const moodSchema = z.object({
   mood: z.enum(['positive', 'neutral', 'stressed', 'unclassified']),
-  valence: z.number().int().min(1).max(5),
-  arousal: z.number().int().min(1).max(5),
+  valence: z.number().int().min(1).max(5).nullable(),
+  arousal: z.number().int().min(1).max(5).nullable(),
   text_opt_in: z.boolean(),
   text: z.string().max(1000).optional(),
   reference_mood: z.enum(['positive', 'neutral', 'stressed', 'unclassified']).optional(),
@@ -228,6 +228,10 @@ export function createApp(
   });
   route('mood', (s, b) => {
     const input = moodSchema.parse(b);
+    if (s.mode !== 'workspace' && (input.valence === null || input.arousal === null))
+      throw Object.assign(new Error('Study check-ins require both context ratings.'), {
+        status: 400,
+      });
     if (
       (input.camera_suggestion || input.assessment_source?.startsWith('camera')) &&
       s.mode !== 'workspace'

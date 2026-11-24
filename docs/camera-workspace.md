@@ -1,5 +1,9 @@
 # Camera-first personal workspace
 
+## Simplified flow
+
+The default flow is consent → camera or three mood buttons → Open my workspace. It opens the suggested layout directly. Preferences, record purpose and optional review are under More options; explanations and feedback are collapsed. All eight layouts remain in the workspace switcher. Pleasantness and energy sliders appear only in the original study, where they are independent self-reported measurements. Personal camera check-ins save these unmeasured values as null, rather than fabricating them from an expression label. Mood recognition does not measure energy or pleasantness.
+
 The user's revised requirement on 2026-11-24 replaces optional text prediction as the primary personal-workspace input. The original master prompt explicitly excluded cameras; the original self-report study protocol remains intact at `/study`. The revised `/adapt` uses a camera, three confirmed mood modes and eight existing interactive structures. Text is absent from this personal check-in.
 
 Click Enable camera & scan, grant browser permission, face the camera alone in good lighting, accept or correct the suggestion, then continue to the recommendation and open the workspace. Mood-guided demo suggestions are enabled initially. Existing workspaces have a Start a new mood check control; save the resume code to return to the old workspace.

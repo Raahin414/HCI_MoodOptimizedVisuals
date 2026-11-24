@@ -5,6 +5,17 @@ import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/re
 import '@testing-library/jest-dom/vitest';
 import MoodCheck from '../src/MoodCheck';
 afterEach(cleanup);
+it('keeps the camera flow to three choices and saves no invented scale ratings', () => {
+  const save = vi.fn();
+  render(<MoodCheck camera onSave={save} />);
+  expect(screen.queryByRole('slider')).not.toBeInTheDocument();
+  expect(screen.getAllByRole('radio')).toHaveLength(3);
+  fireEvent.click(screen.getByRole('radio', { name: /Positive/ }));
+  fireEvent.click(screen.getByRole('button', { name: /Continue to the designs/ }));
+  expect(save).toHaveBeenCalledWith(
+    expect.objectContaining({ mood: 'positive', valence: null, arousal: null }),
+  );
+});
 it('keeps the independent report when a prediction is accepted then rejected, while retaining its audit link', async () => {
   const save = vi.fn();
   render(

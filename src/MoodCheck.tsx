@@ -50,26 +50,30 @@ export default function MoodCheck({
   const icons = [Sun, Minus, Cloud];
   return (
     <div className="study-form">
-      <span className="context-label">{after ? 'A final check-in' : 'Before we begin'}</span>
+      {!camera && (
+        <span className="context-label">{after ? 'A final check-in' : 'Before we begin'}</span>
+      )}
       <h1>
         {after
           ? 'How are you feeling now?'
           : camera
-            ? 'A space for your current mood.'
+            ? 'How are you feeling?'
             : 'How are you arriving today?'}
       </h1>
       <p>
         {after
           ? 'Feelings can change during a session. This check-in records that context.'
-          : 'Choose the closest description. Your own report is the main mood label; there is no right answer.'}
+          : camera
+            ? 'Scan your face or choose a mood.'
+            : 'Choose the closest description. Your own report is the main mood label; there is no right answer.'}
       </p>
       <form
         onSubmit={(e) => {
           e.preventDefault();
           onSave({
             mood,
-            valence,
-            arousal,
+            valence: camera ? null : valence,
+            arousal: camera ? null : arousal,
             text_opt_in: opt,
             ...(camera
               ? {
@@ -96,7 +100,7 @@ export default function MoodCheck({
             }}
           />
         )}
-        <fieldset className="mood-options">
+        <fieldset className={camera ? 'mood-options simple-moods' : 'mood-options'}>
           <legend className="sr-only">Current mood</legend>
           {MOODS.map((m, i) => {
             const Icon = icons[i];
@@ -104,6 +108,7 @@ export default function MoodCheck({
               <label className={'mood-option ' + (mood === m.id ? 'active' : '')} key={m.id}>
                 <input
                   type="radio"
+                  aria-label={m.label}
                   name="mood"
                   value={m.id}
                   checked={mood === m.id}
@@ -111,52 +116,56 @@ export default function MoodCheck({
                   required
                 />
                 <Icon size={22} />
-                <strong>{m.label}</strong>
-                <span>{m.copy}</span>
+                <strong>{camera ? ['Positive', 'Neutral', 'Stressed'][i] : m.label}</strong>
+                {!camera && <span>{m.copy}</span>}
               </label>
             );
           })}
-          <label className="unsure-option">
-            <input
-              type="radio"
-              name="mood"
-              checked={mood === 'unclassified'}
-              onChange={() => setMood('unclassified')}
-              value="unclassified"
-            />
-            I'm not sure / prefer not to classify
-          </label>
+          {!camera && (
+            <label className="unsure-option">
+              <input
+                type="radio"
+                name="mood"
+                checked={mood === 'unclassified'}
+                onChange={() => setMood('unclassified')}
+                value="unclassified"
+              />
+              I'm not sure / prefer not to classify
+            </label>
+          )}
         </fieldset>
-        <div className="scale-grid">
-          <label>
-            Pleasantness <strong>{valence} / 5</strong>
-            <input
-              aria-label="Pleasantness"
-              type="range"
-              min={1}
-              max={5}
-              value={valence}
-              onChange={(e) => setValence(+e.target.value)}
-            />
-            <small>
-              1 · Unpleasant <span>5 · Pleasant</span>
-            </small>
-          </label>
-          <label>
-            Energy <strong>{arousal} / 5</strong>
-            <input
-              aria-label="Energy"
-              type="range"
-              min={1}
-              max={5}
-              value={arousal}
-              onChange={(e) => setArousal(+e.target.value)}
-            />
-            <small>
-              1 · Low energy <span>5 · High energy</span>
-            </small>
-          </label>
-        </div>
+        {!camera && (
+          <div className="scale-grid">
+            <label>
+              Pleasantness <strong>{valence} / 5</strong>
+              <input
+                aria-label="Pleasantness"
+                type="range"
+                min={1}
+                max={5}
+                value={valence}
+                onChange={(e) => setValence(+e.target.value)}
+              />
+              <small>
+                1 · Unpleasant <span>5 · Pleasant</span>
+              </small>
+            </label>
+            <label>
+              Energy <strong>{arousal} / 5</strong>
+              <input
+                aria-label="Energy"
+                type="range"
+                min={1}
+                max={5}
+                value={arousal}
+                onChange={(e) => setArousal(+e.target.value)}
+              />
+              <small>
+                1 · Low energy <span>5 · High energy</span>
+              </small>
+            </label>
+          </div>
+        )}
         {!after && !camera && (
           <div className="optional-text">
             <label>
@@ -244,9 +253,11 @@ export default function MoodCheck({
           <ArrowRight size={16} />
         </button>
       </form>
-      <p className="muted">
-        Self-report for a class exercise. This is not a psychological assessment.
-      </p>
+      {!camera && (
+        <p className="muted">
+          Self-report for a class exercise. This is not a psychological assessment.
+        </p>
+      )}
     </div>
   );
 }
