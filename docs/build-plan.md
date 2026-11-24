@@ -10,3 +10,10 @@
 Executed results are in `verification.md`. No participant data is seeded. Human rehearsal,
 institutional approval, real recruitment and prospective adaptation validation remain outstanding
 research work, not completed software milestones.
+# Camera-first revision, 2026-11-24
+
+- [x] Local camera inference, consent, three expression-to-mode mappings, correction and eight working interface choices.
+- [x] Bundled local models, camera release, no-face/multiple-face abstention, permission error handling and metadata provenance.
+- [x] Browser model-loading/no-face/stop check, viewport captures and unit mapping checks.
+- [ ] User hardware scan and human expression-accuracy study (not claimed by automated checks).
+

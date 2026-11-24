@@ -20,7 +20,7 @@ export default function AdaptiveWorkspace() {
     [consent, setConsent] = useState(false),
     [source, setSource] = useState('demo'),
     [preferred, setPreferred] = useState(''),
-    [moodGuided, setMoodGuided] = useState(false),
+    [moodGuided, setMoodGuided] = useState(true),
     [alternative, setAlternative] = useState('U01'),
     [purpose, setPurpose] = useState(false),
     [savedFeedback, setSavedFeedback] = useState(false),
@@ -182,9 +182,9 @@ export default function AdaptiveWorkspace() {
           <span className="context-label">Mood-aware workspace · separate from the experiment</span>
           <h1>Find your space for today.</h1>
           <p>
-            Report how you feel, review an honestly sourced suggestion, and open any of the eight
-            designs. Your own choice remains the fallback until enough genuine study observations
-            exist.
+            Use your camera to estimate an expression, confirm one of three mood modes, and open a
+            suggested workspace. All eight structures remain yours to choose. Camera processing
+            stays on this device; you can also choose a mood manually.
           </p>
           <label>
             Your preferred structure
@@ -226,9 +226,10 @@ export default function AdaptiveWorkspace() {
           </label>
           <p className="ethics-note">
             Local class project, pending institutional review. With your agreement we save mood
-            reports, choices, workspace actions and optional ratings under a private code. Text
-            requires separate opt-in. You can delete the records at any time. Personal workspace use
-            is not a randomized study trial.
+            confirmed mood labels, choices, workspace actions and optional ratings under a private
+            code. Camera access is optional and requested separately. Images are never saved. You
+            can delete the records at any time. Personal workspace use is not a randomized study
+            trial.
           </p>
           <label className="checkbox-label">
             <input
@@ -278,6 +279,7 @@ export default function AdaptiveWorkspace() {
           </div>
           {session.phase === 'mood' ? (
             <MoodCheck
+              camera
               continueLabel="Find my workspace suggestion"
               predict={(text, reference_mood) =>
                 api(
@@ -375,6 +377,22 @@ export default function AdaptiveWorkspace() {
                   <p>
                     Your chosen structure is rendered below. Changes and voluntary feedback are
                     saved separately from experimental trials.
+                  </p>
+                  <button
+                    onClick={() => {
+                      localStorage.removeItem(key);
+                      setCredentials(null);
+                      setSession(null);
+                      setResult(null);
+                      setConsent(false);
+                      setError('');
+                    }}
+                  >
+                    Start a new mood check
+                  </button>
+                  <p className="muted">
+                    This starts a separate workspace. Save your current resume code in Workspace
+                    controls to return here.
                   </p>
                 </div>
                 <label>

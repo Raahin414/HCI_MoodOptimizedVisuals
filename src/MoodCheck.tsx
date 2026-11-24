@@ -1,18 +1,22 @@
 import { useState } from 'react';
 import { ArrowRight, Sun, Minus, Cloud } from 'lucide-react';
 import { MOODS, ruleMood, type Mood } from './domain';
+import CameraMood from './CameraMood';
 export default function MoodCheck({
   after = false,
   onSave,
   predict,
   continueLabel,
+  camera = false,
 }: {
   after?: boolean;
   onSave: (b: any) => void;
   predict?: (text: string, reference_mood: Mood) => Promise<any>;
   continueLabel?: string;
+  camera?: boolean;
 }) {
   const [mood, setMood] = useState<Mood | ''>('');
+  const [cameraSuggestion, setCameraSuggestion] = useState<Mood | null>(null);
   const [text, setText] = useState('');
   const [opt, setOpt] = useState(false);
   const [prediction, setPrediction] = useState<any>(null);
@@ -47,7 +51,13 @@ export default function MoodCheck({
   return (
     <div className="study-form">
       <span className="context-label">{after ? 'A final check-in' : 'Before we begin'}</span>
-      <h1>{after ? 'How are you feeling now?' : 'How are you arriving today?'}</h1>
+      <h1>
+        {after
+          ? 'How are you feeling now?'
+          : camera
+            ? 'A space for your current mood.'
+            : 'How are you arriving today?'}
+      </h1>
       <p>
         {after
           ? 'Feelings can change during a session. This check-in records that context.'
@@ -61,6 +71,16 @@ export default function MoodCheck({
             valence,
             arousal,
             text_opt_in: opt,
+            ...(camera
+              ? {
+                  assessment_source: cameraSuggestion
+                    ? cameraSuggestion === mood
+                      ? 'camera-confirmed'
+                      : 'camera-corrected'
+                    : 'self-report',
+                  camera_suggestion: cameraSuggestion || undefined,
+                }
+              : {}),
             ...(opt ? { text } : {}),
             ...(opt && prediction?.prediction_id
               ? { prediction_id: prediction.prediction_id }
@@ -68,6 +88,14 @@ export default function MoodCheck({
           });
         }}
       >
+        {camera && (
+          <CameraMood
+            onAccept={(m) => {
+              setCameraSuggestion(m);
+              setMood(m);
+            }}
+          />
+        )}
         <fieldset className="mood-options">
           <legend className="sr-only">Current mood</legend>
           {MOODS.map((m, i) => {
@@ -129,7 +157,7 @@ export default function MoodCheck({
             </small>
           </label>
         </div>
-        {!after && (
+        {!after && !camera && (
           <div className="optional-text">
             <label>
               In a sentence, how are you feeling right now? <span className="muted">Optional</span>

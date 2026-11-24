@@ -33,6 +33,8 @@ const moodSchema = z.object({
   text: z.string().max(1000).optional(),
   reference_mood: z.enum(['positive', 'neutral', 'stressed', 'unclassified']).optional(),
   prediction_id: z.string().uuid().optional(),
+  assessment_source: z.enum(['self-report', 'camera-confirmed', 'camera-corrected']).optional(),
+  camera_suggestion: z.enum(['positive', 'neutral', 'stressed']).optional(),
 });
 const choiceSchema = z
   .object({
@@ -226,6 +228,14 @@ export function createApp(
   });
   route('mood', (s, b) => {
     const input = moodSchema.parse(b);
+    if (
+      (input.camera_suggestion || input.assessment_source?.startsWith('camera')) &&
+      s.mode !== 'workspace'
+    )
+      throw Object.assign(
+        new Error('Camera assessment is only available in the personal workspace.'),
+        { status: 400 },
+      );
     const phase = s.phase === 'mood' ? 'before' : 'after';
     if (phase === 'after') requirePhase(s, 'exitMood');
     const prediction = input.prediction_id

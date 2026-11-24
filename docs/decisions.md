@@ -1,5 +1,7 @@
 # Implementation decisions
 
+- Revised user requirement (2026-11-24): camera expression suggestions replace text input on `/adapt`, overriding the original document's camera prohibition for the personal workspace. The randomized study remains self-report based. See camera-workspace.md for the local model, mappings, provenance and verification boundaries.
+
 - Local-only implementation follows the specification's offline SQLite/Node requirement. Sites hosting uses a different server runtime; registration/publication is outside this local research-software deliverable.
 - Node 24 LTS built-in `node:sqlite` avoids native compilation on Windows. SQLite is experimental in Node 24 and emits its standard warning. No cloud or Python is needed for the app.
 - Fixed fictional reference day 2026-11-18 makes scoring reproducible. The workspace clearly labels the scenario date. Calendar navigation exposes all fixture dates.

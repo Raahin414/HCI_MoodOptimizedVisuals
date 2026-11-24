@@ -16,17 +16,8 @@ for (const mood of [
     await page.getByLabel('I voluntarily agree to this local workspace').check();
     await page.getByRole('button', { name: 'Assess my current mood' }).click();
     await page.getByRole('radio', { name: mood.label }).check();
-    if (mood.id === 'positive') {
-      await page.getByLabel('In a sentence').fill('I am happy and excited');
-      await page.getByLabel('I explicitly agree to save this text').check();
-      await page.getByRole('button', { name: 'Predict from consented text' }).click();
-      await expect(
-        page.getByText(/^(rule-based demonstration|public-corpus-model)$/),
-      ).toBeVisible();
-      await page.getByRole('button', { name: 'Keep my own selection' }).click();
-    }
-    if (mood.id === 'stressed')
-      await page.getByLabel('In a sentence').fill('THIS MUST NOT BE STORED');
+    await expect(page.getByRole('button', { name: 'Enable camera & scan' })).toBeVisible();
+    await expect(page.getByLabel('In a sentence')).toHaveCount(0);
     await page.getByRole('button', { name: 'Find my workspace suggestion' }).click();
     await expect(
       page.getByText('Your preference · insufficient evidence', { exact: true }),
@@ -104,6 +95,7 @@ test('accepted fallback renders suggested UI; all eight can be switched without 
 }) => {
   await page.goto('/adapt');
   await page.getByLabel('Workspace record purpose').selectOption('automated_test');
+  await page.getByLabel('Try mood-guided design suggestions').uncheck();
   await page.getByLabel('I voluntarily agree').check();
   await page.getByRole('button', { name: 'Assess my current mood' }).click();
   await page.getByRole('radio', { name: /Neutral \/ Balanced/ }).check();
